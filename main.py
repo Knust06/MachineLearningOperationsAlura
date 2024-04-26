@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from textblob import TextBlob
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -6,8 +6,8 @@ from sklearn.linear_model import LinearRegression
 
 url = 'https://raw.githubusercontent.com/alura-cursos/1576-mlops-machine-learning/aula-5/casas.csv'
 df = pd.read_csv(url)
-colunas = ['tamanho', 'preco']
-df = df[colunas]
+colunas = ['tamanho', 'ano','garagem']
+
 df.head()
 x = df.drop('preco', axis = 1)
 y = df['preco']
@@ -32,9 +32,11 @@ def sentimento(frase):
     polaridade = tb.sentiment.polarity
     return f'Polaridade: {polaridade}'
 
-@app.route('/cotacao/<int:tamanho>')
-def cotacao(tamanho):
-    preco = modelo.predict([[tamanho]])
-    return f'Preço estimado: R$ {preco[0]:.2f}'
+@app.route('/cotacao/',methods=['POST'])
+def cotacao():
+    dados = request.get_json()
+    dados_input = [dados[col] for col in colunas]
+    preco = modelo.predict([dados_input])
+    return jsonify(preco = preco[0])
 
 app.run(debug=True)
