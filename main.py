@@ -37,3 +37,6 @@ def cotacao():
     return jsonify(preco = preco[0])
 
 app.run(debug=True)
+
+#Para gerar o ambiente virtual: python -m virtualenv venv
+#Para ativar o ambiente virtual: venv\Sripts\activate
