@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 import pickle
 
 colunas = ['tamanho', 'ano', 'garagem']
-modelo = pickle.load(open('modelo.sav', 'rb'))
+modelo = pickle.load(open('../../models/modelo.sav', 'rb'))
 
 
 app = Flask(__name__)
@@ -36,7 +36,8 @@ def cotacao():
     preco = modelo.predict([dados_input])
     return jsonify(preco = preco[0])
 
-app.run(debug=True)
+app.run(debug=True, host='0.0.0.0')
 
 #Para gerar o ambiente virtual: python -m virtualenv venv
 #Para ativar o ambiente virtual: venv\Sripts\activate
+#Para entrar na pasta do projeto: cd mlops-deploy\src\app
